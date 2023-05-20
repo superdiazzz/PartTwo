@@ -2,6 +2,7 @@ package mobile.android.partthree
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
 import mobile.android.partthree.`interface`.ScreenOneListener
 import mobile.android.partthree.adapter.ContactAdapter
@@ -9,6 +10,7 @@ import mobile.android.partthree.base.BaseActivity
 import mobile.android.partthree.databinding.ActivityScreenOneBinding
 import mobile.android.partthree.model.DataResponseItem
 import mobile.android.partthree.utils.Common
+import mobile.android.partthree.utils.Coroutines
 import mobile.android.partthree.viewmodels.ScreenOneViewModel
 import org.kodein.di.DIAware
 import org.kodein.di.android.di
@@ -34,12 +36,19 @@ class ScreenOneActivity : BaseActivity(), ScreenOneListener {
 
 
 
+        binding.swipeRef.setOnRefreshListener {
+            Coroutines.delayMain(2000, work = {
+                binding.swipeRef.isRefreshing = false
+                Toast.makeText(this, "Reloaded!", Toast.LENGTH_SHORT).show()
+            })
+        }
+
     }
 
     override fun onSuccess(list: List<DataResponseItem>) {
 
         Timber.d("Isi ${list.toString()}")
-        val adapter = ContactAdapter(list)
+        val adapter = ContactAdapter(this, list)
         binding.recyclerview.adapter = adapter
     }
 }
