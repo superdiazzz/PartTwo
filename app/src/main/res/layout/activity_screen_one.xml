@@ -22,11 +22,13 @@
         </com.google.android.material.appbar.AppBarLayout>
 
 
-        <TextView
-            android:id="@+id/text_test"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="text"/>
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"
+            tools:listitem="@layout/item_recyclerview"/>
 
 
     </LinearLayout>

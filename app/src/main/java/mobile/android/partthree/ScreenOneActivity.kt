@@ -3,14 +3,18 @@ package mobile.android.partthree
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import mobile.android.partthree.`interface`.ScreenOneListener
+import mobile.android.partthree.adapter.ContactAdapter
 import mobile.android.partthree.base.BaseActivity
 import mobile.android.partthree.databinding.ActivityScreenOneBinding
+import mobile.android.partthree.model.DataResponseItem
 import mobile.android.partthree.utils.Common
 import mobile.android.partthree.viewmodels.ScreenOneViewModel
 import org.kodein.di.DIAware
 import org.kodein.di.android.di
+import timber.log.Timber
 
-class ScreenOneActivity : BaseActivity() {
+class ScreenOneActivity : BaseActivity(), ScreenOneListener {
 
     private lateinit var binding : ActivityScreenOneBinding
 
@@ -21,11 +25,21 @@ class ScreenOneActivity : BaseActivity() {
         binding = ActivityScreenOneBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val test = Common.inputStreamToString(resources.openRawResource(R.raw.data))
+        viewModel.listener = this
+        viewModel.getListContact()
 
-        binding.textTest.text = test
+//        val test = Common.inputStreamToString(resources.openRawResource(R.raw.data))
+
+//        binding.textTest.text = test
 
 
 
+    }
+
+    override fun onSuccess(list: List<DataResponseItem>) {
+
+        Timber.d("Isi ${list.toString()}")
+        val adapter = ContactAdapter(list)
+        binding.recyclerview.adapter = adapter
     }
 }
